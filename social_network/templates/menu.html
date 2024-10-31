@@ -1,0 +1,62 @@
+{% load static %}
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark sticky-top">
+    <div class="container-fluid">
+      <a href="{% url 'account:user_account' %}" class=""><img src="{{MEDIA_URL}}images/important/logo32.png" alt=""></a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          {% if request.user.is_authenticated %}
+            <!-- <li class="nav-item">
+              <a href="{% url 'account:user_account' %}" class="nav-link text-white ">Моя страница</a>
+            </li> -->
+            <li class="nav-item">
+              <a href="{% url 'account:friends' %}" class="nav-link text-white"><img style="border-radius: 0px !important;" src="{{MEDIA_URL}}images/important/friends.png" alt="friends"></a>
+            </li>
+            <li class="nav-item">
+              <a href="{% url 'dialogs:messages' %}" class="nav-link text-white"><img style="border-radius: 0px !important;" src="{{MEDIA_URL}}images/important/message.png" alt="messages"><span class="badge badge-primary" id="messages_count"></span></a>
+            </li>
+            <li class="nav-item">
+              <a href="{% url 'posts:friend_news' %}" class="nav-link text-white"><img style="border-radius: 0px !important;" src="{{MEDIA_URL}}images/important/feed.png" alt="feed"></a>
+            </li>
+            <li class="nav-item">
+<!--              <a href="{% url 'registration:logout' %}" class="nav-link text-danger">Выйти</a>-->
+              <form method="post" action="{% url 'registration:logout' %}">
+                {% csrf_token %}
+                <style>
+                  button, input[type="submit"], input[type="reset"] {
+                    background: none;
+                    color: inherit;
+                    border: none;
+                    padding: 0;
+                    font: inherit;
+                    cursor: pointer;
+                    outline: inherit;
+                  }
+                </style>
+                <button type="submit" class="nav-link text-danger"><img style="border-radius: 0px !important;" src="{{MEDIA_URL}}images/important/exit.png" alt="exit"></button>
+              </form>
+            </li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+  <script src="{% static 'js/dialogs/new_messages.js' %}" charset="utf-8"></script>
+  <script type="text/javascript">
+    var csrftoken = Cookies.get('csrftoken');
+      function csrfSafeMethod(method) {
+        // Для этих методов токен не будет подставляться в заголовок.
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+      }
+    $.ajaxSetup({
+      beforeSend: function(xhr, settings) {
+        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+          xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        }
+      }
+    });
+  </script>
